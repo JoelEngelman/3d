@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMBERFALL — 3D Arena</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="loading"><div class="loader-ring"></div><span>FORGING THE ARENA…</span></div>
+  <canvas id="game"></canvas>
+  <div id="hud">
+    <div class="topbar">
+      <div class="brand"><span class="brand-mark">◆</span><div><b>EMBERFALL</b><small>THE SHATTERED REALM</small></div></div>
+      <div class="wave"><small>WAVE</small><strong id="wave">1</strong></div>
+      <div class="score"><small>SOULS</small><strong id="score">0</strong></div>
+    </div>
+    <div class="bottom">
+      <div class="health-wrap"><div class="health-label"><span>VITALITY</span><b id="healthText">100 / 100</b></div><div class="health"><i id="healthBar"></i></div></div>
+      <div class="ability"><span class="key">SHIFT</span><span>DASH</span><i id="dashBar"></i></div>
+      <div class="hint">WASD MOVE &nbsp; • &nbsp; MOUSE AIM &nbsp; • &nbsp; CLICK STRIKE &nbsp; • &nbsp; SHIFT DASH</div>
+    </div>
+  </div>
+  <div id="message"><strong id="messageTitle">EMBERFALL</strong><span id="messageSub">Click to enter the realm</span><button id="start">ENTER ARENA</button></div>
+  <div id="damageFlash"></div>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
