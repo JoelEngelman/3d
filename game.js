@@ -43,14 +43,12 @@ function addMesh(geo,material,x=0,y=0,z=0,cast=true,receive=true){
   return o;
 }
 
-// Ground and arena.
 const floor=addMesh(new THREE.PlaneGeometry(180,180),mat(0x202720,1),0,0,0,false,true);
 floor.rotation.x=-Math.PI/2;
 const arena=addMesh(new THREE.CylinderGeometry(27,29,.45,64),darkStone,0,-.22,0,false,true);
 const ring=addMesh(new THREE.RingGeometry(25.5,27,64),mat(0x626458,.82),0,.02,0,false,false);
 ring.rotation.x=-Math.PI/2;
 
-// Stone pillars around the clearing.
 function pillar(x,z){
   addMesh(new THREE.CylinderGeometry(1.15,1.45,6,8),darkStone,x,3,z);
   addMesh(new THREE.CylinderGeometry(1.55,1.2,.5,8),stone,x,6.1,z);
@@ -60,7 +58,6 @@ for(let i=0;i<18;i++){
   pillar(Math.cos(a)*25,Math.sin(a)*25);
 }
 
-// Small rocks.
 for(let i=0;i<28;i++){
   const a=Math.random()*Math.PI*2;
   const d=5+Math.random()*19;
@@ -69,7 +66,6 @@ for(let i=0;i<28;i++){
   rock.scale.set(1,.65,.85);
 }
 
-// Forest outside the arena. Instanced meshes keep this cheap to render.
 const treeCount=90;
 const trunkGeo=new THREE.CylinderGeometry(.3,.48,3.4,7);
 const crownGeo=new THREE.ConeGeometry(2.05,4.8,8);
@@ -105,7 +101,6 @@ crowns.instanceMatrix.needsUpdate=true;
 crowns2.instanceMatrix.needsUpdate=true;
 scene.add(trunks,crowns,crowns2);
 
-// Torches.
 function torch(x,z){
   addMesh(new THREE.CylinderGeometry(.11,.16,2.4,8),wood,x,1.2,z);
   const flame=addMesh(new THREE.SphereGeometry(.3,8,6),new THREE.MeshBasicMaterial({color:0xffa23b}),x,2.65,z,false,false);
@@ -155,14 +150,23 @@ function dagger(side){
 }
 const daggerL=dagger(-1),daggerR=dagger(1);
 
-// Keep every player mesh explicitly renderable. This only fixes player visibility.
+// Player visibility safeguard.
 player.visible=true;
 player.traverse(o=>{
   if(o.isMesh){
     o.visible=true;
     o.frustumCulled=false;
+    o.renderOrder=1000;
+    if(o.material && o.material.isMeshStandardMaterial){
+      o.material=o.material.clone();
+      o.material.emissive=o.material.color.clone();
+      o.material.emissiveIntensity=.35;
+    }
   }
 });
+const playerLight=new THREE.PointLight(0xffd18a,2.2,7);
+playerLight.position.set(0,2.2,.2);
+player.add(playerLight);
 
 let enemies=[];
 let particles=[];
