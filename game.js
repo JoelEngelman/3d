@@ -155,6 +155,15 @@ function dagger(side){
 }
 const daggerL=dagger(-1),daggerR=dagger(1);
 
+// Keep every player mesh explicitly renderable. This only fixes player visibility.
+player.visible=true;
+player.traverse(o=>{
+  if(o.isMesh){
+    o.visible=true;
+    o.frustumCulled=false;
+  }
+});
+
 let enemies=[];
 let particles=[];
 let keys={};
