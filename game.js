@@ -150,7 +150,7 @@ function dagger(side){
 }
 const daggerL=dagger(-1),daggerR=dagger(1);
 
-// Player visibility safeguard.
+// Player visibility safeguard: render only the player with an unlit material and no depth occlusion.
 player.visible=true;
 player.traverse(o=>{
   if(o.isMesh){
@@ -158,9 +158,13 @@ player.traverse(o=>{
     o.frustumCulled=false;
     o.renderOrder=1000;
     if(o.material && o.material.isMeshStandardMaterial){
+      const color=o.material.color.clone();
+      o.material=new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,depthTest:false,depthWrite:false});
+    }else if(o.material){
       o.material=o.material.clone();
-      o.material.emissive=o.material.color.clone();
-      o.material.emissiveIntensity=.35;
+      o.material.depthTest=false;
+      o.material.depthWrite=false;
+      o.material.side=THREE.DoubleSide;
     }
   }
 });
